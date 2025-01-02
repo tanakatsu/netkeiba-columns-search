@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from lib.netkeiba import ColumnList
 
-KEYWORD = "AI予想"
+KEYWORD = "Aiエスケープ"
 
 
 def main():
