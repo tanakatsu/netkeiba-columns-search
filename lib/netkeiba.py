@@ -33,12 +33,9 @@ class Column:
 class ColumnList:
     BASE_URL = "https://news.netkeiba.com/?pid=column_search"
 
-    def __init__(self, keyword: str = None):
-        if keyword is None:
-            self.url = self.BASE_URL
-        else:
-            keyword_encoded = urllib.parse.quote(keyword, encoding="euc-jp")
-            self.url = f"{self.BASE_URL}&keyword={keyword_encoded}"
+    def __init__(self, keyword: str):
+        keyword_encoded = urllib.parse.quote(keyword, encoding="euc-jp")
+        self.url = f"{self.BASE_URL}&keyword={keyword_encoded}"
 
     def get_all(self, fetch_content: bool = True, timeout: int = 15000) -> list[Column]:
         print(f"URL: {self.url}")
