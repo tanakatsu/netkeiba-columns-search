@@ -42,20 +42,24 @@ class ColumnList:
         total_pages = self.__get_total_pages(timeout=timeout)
         print("Total pages:", total_pages)
 
+        cid_list = self.__get_cid_list(total_pages, timeout=timeout)
+        print("Total columns:", len(cid_list))
+
+        columns = [Column(cid) for cid in cid_list]
+
+        if fetch_content:
+            self.__get_contents(columns, timeout=timeout)
+        return columns
+
+    def __get_cid_list(self, total_pages: int, timeout: int = 15000) -> list[int]:
         cid_list = []
         for page_no in range(1, total_pages + 1):
             cid_list += self.__get_column_list(page_no, timeout=timeout)
-        print("Total columns:", len(cid_list))
+        return cid_list
 
-        columns = []
-        for cid in tqdm(cid_list, desc="Fetching columns.."):
-            column = Column(cid)
-            if fetch_content:
-                column.fetch_content(timeout=timeout)
-                # print("Fetched:", cid)
-
-            columns.append(column)
-        return columns
+    def __get_contents(self, columns: list[Column], timeout: int = 15000):
+        for column in tqdm(columns, desc="Fetching content"):
+            column.fetch_content(timeout=timeout)
 
     @retry(stop=stop_after_attempt(MAX_RETRY),
            retry=retry_if_exception_type(TimeoutError))
