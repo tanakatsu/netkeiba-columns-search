@@ -20,7 +20,7 @@ class Column:
 
     @retry(stop=stop_after_attempt(MAX_RETRY),
            retry=retry_if_exception_type(TimeoutError))
-    async def fetch_content(self, timeout=3000):
+    async def fetch_content(self, timeout: int = 3000):
         async with async_playwright() as p:
             browser = await p.chromium.launch()
             context = await browser.new_context()
